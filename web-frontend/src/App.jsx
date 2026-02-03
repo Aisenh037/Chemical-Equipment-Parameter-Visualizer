@@ -23,7 +23,8 @@ ChartJS.register(
   Legend
 );
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api/equipment';
+const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api/equipment';
+const API_BASE = VITE_API_BASE_URL.endsWith('/') ? VITE_API_BASE_URL.slice(0, -1) : VITE_API_BASE_URL;
 const AUTH_HEADER = {
   Authorization: 'Basic ' + btoa('admin:password123')
 };
@@ -40,11 +41,12 @@ function App() {
   }, []);
 
   const fetchHistory = async () => {
+    const url = `${API_BASE}/history/`;
     try {
-      const res = await axios.get(`${API_BASE}/history/`, { headers: AUTH_HEADER });
+      const res = await axios.get(url, { headers: AUTH_HEADER });
       setHistory(res.data);
     } catch (err) {
-      console.error("Failed to fetch history", err);
+      console.error(`Failed to fetch history from ${url}`, err);
     }
   };
 
@@ -62,9 +64,10 @@ function App() {
     const formData = new FormData();
     formData.append('file', file);
 
+    const url = `${API_BASE}/upload/`;
     setLoading(true);
     try {
-      const res = await axios.post(`${API_BASE}/upload/`, formData, {
+      const res = await axios.post(url, formData, {
         headers: {
           ...AUTH_HEADER,
           'Content-Type': 'multipart/form-data'
@@ -73,7 +76,8 @@ function App() {
       setData(res.data);
       fetchHistory();
     } catch (err) {
-      setError(err.response?.data?.error || "Upload failed");
+      console.error(`Upload failed at ${url}`, err);
+      setError(err.response?.data?.error || "Upload failed. Check console for URL.");
     } finally {
       setLoading(false);
     }
