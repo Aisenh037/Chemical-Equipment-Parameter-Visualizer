@@ -55,7 +55,7 @@ IITB/
 2. Connect your GitHub repository.
 3. Set **Root Directory** to `backend`.
 4. Set **Build Command** to `./build.sh`.
-5. Set **Start Command** to `gunicorn config.wsgi`.
+5. Set **Start Command** to `gunicorn config.wsgi`. (Note: our project name is `config`)
 6. Add **Environment Variables**:
    - `SECRET_KEY`: A unique random string.
    - `DEBUG`: `False`.
