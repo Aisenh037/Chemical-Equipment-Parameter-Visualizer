@@ -48,5 +48,24 @@ IITB/
 2. Ensure you have the backend dependencies installed (PyQt5, matplotlib, requests)
 3. Run the application: `python main.py`
 
+## Deployment
+
+### Backend (Render)
+1. Create a new **Web Service** on Render.
+2. Connect your GitHub repository.
+3. Set **Root Directory** to `backend`.
+4. Set **Build Command** to `./build.sh`.
+5. Set **Start Command** to `gunicorn config.wsgi`.
+6. Add **Environment Variables**:
+   - `SECRET_KEY`: A unique random string.
+   - `DEBUG`: `False`.
+
+### Frontend (Vercel)
+1. Create a new **Project** on Vercel.
+2. Connect your GitHub repository.
+3. Select `web-frontend` as the **Root Directory**.
+4. Add **Environment Variables**:
+   - `VITE_API_BASE_URL`: The URL of your deployed Render backend (e.g., `https://your-app.onrender.com/api/equipment`).
+
 ## Sample Data
 Use the provided `data/sample_equipment_data.csv` for initial testing.
